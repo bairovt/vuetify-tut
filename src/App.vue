@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer
-
+      temporary
       v-model="drawer"
       enable-resize-watcher
       app
@@ -39,17 +39,19 @@
 
     </v-toolbar>
     <main>
-      <router-view>
-
-      </router-view>
-      <!--<v-content>-->
-      <!--</v-content>-->
+      <v-content>
+        <router-view>
+        </router-view>
+      </v-content>
     </main>
   </v-app>
 </template>
 
 <script>
+  import VContent from "vuetify/es5/components/VGrid/VContent";
+
   export default {
+    components: {VContent},
     data () {
       return {
         drawer: false,
