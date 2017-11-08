@@ -1,5 +1,5 @@
 <template>
-	<v-container fluid>  <!--class="mt-3"-->
+	<v-container>  <!-- fluid class="mt-3"-->
 		<v-layout row wrap>
 			<v-flex xs12 sm6 class="text-xs-center text-sm-right">
 				<v-btn large router to="/meetups" class="info">Explore Meetups</v-btn>
@@ -11,9 +11,11 @@
 		<v-layout row wrap class="mt-2">
 			<v-flex xs12>
 				<v-carousel>
-					<v-carousel-item v-for="meetup in meetups"
+					<v-carousel-item v-for="meetup in meetups" style="cursor: pointer;"
 					                 :src="meetup.imageUrl"
-					                 :key="meetup.id">
+					                 :key="meetup.id"
+					                 @click="onLoadMeetup(meetup.id)"
+					>
 						<div class="title">{{meetup.title}}</div>
 					</v-carousel-item>
 				</v-carousel>
@@ -24,16 +26,16 @@
 
 <script>
 	export default {
-	  data(){
-	    return {
-	      meetups: [
-		      {imageUrl: 'https://c1.staticflickr.com/2/1530/24444226506_2028124153_b.jpg',
-			      id: 'asddsf12', title: 'Meetup in New York'},
-          {imageUrl: 'https://c1.staticflickr.com/9/8233/8586789587_c5f7ac6079_b.jpg',
-            id: 'zxdsf34', title: 'Meetup in Paris'}
-	      ]
+		computed: {
+	    meetups () {
+	      return this.$store.getters.featuredMeetups
 	    }
-	  }
+		},
+		methods: {
+	    onLoadMeetup (id) {
+	      this.$router.push('/meetups/'+id)
+	    }
+		}
 	}
 </script>
 
