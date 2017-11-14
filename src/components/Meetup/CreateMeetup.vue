@@ -34,12 +34,23 @@
 							v-model="description"
 							multiLine
 					></v-text-field>
+					<h5>Выберите дату и время</h5>
+					<v-date-picker
+							:first-day-of-week="0"
+							locale="ru-ru"
+							v-model="date" class="mb-2">
+					</v-date-picker>
+					<p>{{ date }}</p>
+					<v-time-picker v-model="time" format="24hr">
+					</v-time-picker>
+					<p>{{ time }}</p>
 					<v-btn class="primary"
 					       :disabled="!formIsValid"
 					       type="submit"
 					>
 						Create Meetup
 					</v-btn>
+					{{ submittableDateTime }}
 				</form>
 			</v-flex>
 		</v-layout>
@@ -47,13 +58,15 @@
 </template>
 
 <script>
-	export default {
-	  data: function() {
+  export default {
+    data: function() {
 	    return {
 	      title: '',
 		    location: '',
 		    description: '',
-		    imageUrl: ''
+		    imageUrl: '',
+		    date: new Date(),
+		    time: new Date()
 	    }
 	  },
 		computed: {
@@ -62,7 +75,20 @@
 			      this.location !== '' &&
 			      this.description !== '' &&
 			      this.imageUrl !== ''
-	    }
+	    },
+			submittableDateTime () {
+	      let date = new Date(this.date);
+	      if (typeof this.time === 'string') {
+		      let hours = this.time.match(/^(\d+)/)[1]
+		      let minutes = this.time.match(/:(\d+)/)[1]
+          date.setHours(hours)
+          date.setMinutes(minutes)
+	      } else {
+          date.setHours(this.time.getHours())
+          date.setMinutes(this.time.getMinutes())
+	      }
+	      return date
+			}
 		},
 		methods: {
 	    createMeetup () {
@@ -74,7 +100,7 @@
           location: this.location,
           description: this.description,
           imageUrl: this.imageUrl,
-		      date: new Date()
+		      date: this.submittableDateTime
 	      };
 	      // store in Firebase and fetch an id
 

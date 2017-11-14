@@ -7,9 +7,11 @@ export const store = new Vuex.Store({
   state: {
     loadedMeetups: [
       {imageUrl: 'https://c1.staticflickr.com/2/1530/24444226506_2028124153_b.jpg',
-        id: 'asddsf12', title: 'Meetup in New York', date: '2017-11-08'},
+        id: 'asddsf12', title: 'Meetup in New York', date: new Date(),
+        location: 'New York', description: 'New York, New York'},
       {imageUrl: 'https://c1.staticflickr.com/9/8233/8586789587_c5f7ac6079_b.jpg',
-        id: 'zxdsf34', title: 'Meetup in Paris', date: '2017-11-09'}
+        id: 'zxdsf34', title: 'Meetup in Paris', date: new Date(),
+        location: 'Paris', description: 'Paris, Paris'}
     ]
   },
   mutations: {
