@@ -3,7 +3,7 @@
 		<v-layout row>
 			<v-flex xs12 sm6 offset-sm3>
 				<h4>Create a new meetup</h4>
-				<form>
+				<form @submit.prevent="createMeetup">
 					<v-text-field
 							name="title"
 							label="Title"
@@ -34,7 +34,10 @@
 							v-model="description"
 							multiLine
 					></v-text-field>
-					<v-btn class="primary" :disabled="!formIsValid">
+					<v-btn class="primary"
+					       :disabled="!formIsValid"
+					       type="submit"
+					>
 						Create Meetup
 					</v-btn>
 				</form>
@@ -60,7 +63,24 @@
 			      this.description !== '' &&
 			      this.imageUrl !== ''
 	    }
-		}
+		},
+		methods: {
+	    createMeetup () {
+	      if (!this.formIsValid) {
+	        return
+	      }
+	      const meetup = {
+          title: this.title,
+          location: this.location,
+          description: this.description,
+          imageUrl: this.imageUrl,
+		      date: new Date()
+	      };
+	      // store in Firebase and fetch an id
 
+	      this.$store.dispatch('createMeetup', meetup)
+		    this.$router.push('/meetups')
+	    }
+		}
 	}
 </script>
