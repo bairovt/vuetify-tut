@@ -1,7 +1,8 @@
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import {initializeApp} from 'firebase'
+// import {initializeApp} from 'firebase'
+import * as firebase from 'firebase'
 import './stylus/main.styl'
 import App from './App'
 import router from './router'
@@ -20,7 +21,7 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    initializeApp(
+    firebase.initializeApp(
       {
         apiKey: 'AIzaSyDRgnGhi6yG6wPNnJXBK4XoBTjxo_su9F8',
         authDomain: 'vuetify-tut.firebaseapp.com',

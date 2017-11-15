@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
+// import router from 'vue-router'
 
 Vue.use(Vuex);
 
@@ -12,11 +14,15 @@ export const store = new Vuex.Store({
       {imageUrl: 'https://c1.staticflickr.com/9/8233/8586789587_c5f7ac6079_b.jpg',
         id: 'zxdsf34', title: 'Meetup in Paris', date: new Date(),
         location: 'Paris', description: 'Paris, Paris'}
-    ]
+    ],
+    user: null
   },
   mutations: {
     createMeetup (state, payload) {
       state.loadedMeetups.push(payload)
+    },
+    setUser (state, payload) {
+      state.user = payload
     }
   },
   actions: {
@@ -29,8 +35,29 @@ export const store = new Vuex.Store({
         date: payload.date,
         id: 'sdfsdfdfg'
       };
-
       commit('createMeetup', meetup)
+    },
+    signUserUp ({commit}, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+          .then(user => {
+            const newUser = {
+              id: user.uid,
+              registeredMeetups: []
+            }
+            commit('setUser', newUser)
+          })
+          .catch(console.error)
+    },
+    signUserIn ({commit}, payload) {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+          .then(user => {
+            const newUser = {
+              id: user.uid,
+              registeredMeetups: []
+            }
+            commit('setUser', newUser)
+          })
+          .catch(console.error)
     }
   },
   getters: {
@@ -49,6 +76,9 @@ export const store = new Vuex.Store({
           return meetup.id === meetupId
         })
       }
+    },
+    user  (state) {
+      return state.user
     }
   }
 });

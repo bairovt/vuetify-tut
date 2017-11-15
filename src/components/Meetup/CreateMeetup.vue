@@ -40,17 +40,15 @@
 							locale="ru-ru"
 							v-model="date" class="mb-2">
 					</v-date-picker>
-					<p>{{ date }}</p>
+
 					<v-time-picker v-model="time" format="24hr">
 					</v-time-picker>
-					<p>{{ time }}</p>
+
 					<v-btn class="primary"
 					       :disabled="!formIsValid"
-					       type="submit"
-					>
+					       type="submit">
 						Create Meetup
 					</v-btn>
-					{{ submittableDateTime }}
 				</form>
 			</v-flex>
 		</v-layout>

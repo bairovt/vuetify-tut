@@ -25,11 +25,11 @@
 						id="passwordConfirm"
 						type="password"
 						v-model="passwordConfirm"
-						:rules="[comparePass]"> <!--:disabled="!formIsValid"-->
+						:rules="[comparePassRule]">
 					</v-text-field>
 					<v-btn type="submit"
-					       class="primary">
-
+					       class="primary"
+					       :disabled="!formIsValid">
 						Sign up
 					</v-btn>
 				</form>
@@ -48,17 +48,26 @@
 	    }
 	  },
 		computed: {
-	    formIsValid () {
-	      return this.email !== '' && this.password !== '' && passwordConfirm !== '' &&
-             this.password === this.passwordConfirm
-	    },
-			comparePass () {
+      formIsValid () {
+        return this.email && this.password && this.comparePassRule === true
+      },
+			comparePassRule () {
 	      return this.password !== this.passwordConfirm ? 'Пароли не совпадают' : true
+			},
+			user () {
+			  return this.$store.getters.user
+			}
+		},
+		watch: {
+			user (value) {
+			  if (value !== null && value !== undefined) {
+          this.$router.push('/')
+			  }
 			}
 		},
 		methods: {
       onSignup () {
-				console.log()
+				this.$store.dispatch('signUserUp', {email: this.email, password: this.password})
       }
 		}
 	}
