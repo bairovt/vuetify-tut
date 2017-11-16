@@ -15,7 +15,9 @@ export const store = new Vuex.Store({
         id: 'zxdsf34', title: 'Meetup in Paris', date: new Date(),
         location: 'Paris', description: 'Paris, Paris'}
     ],
-    user: null
+    user: null,
+    loading: false,
+    error: null
   },
   mutations: {
     createMeetup (state, payload) {
@@ -23,6 +25,15 @@ export const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
+    },
+    setLoading (state, payload) {
+      state.loading = payload
+    },
+    setError (state, payload) {
+      state.error = payload
+    },
+    clearError (state) {
+      state.error = null
     }
   },
   actions: {
@@ -40,24 +51,31 @@ export const store = new Vuex.Store({
     signUserUp ({commit}, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
           .then(user => {
+            commit('setLoading', false)
             const newUser = {
               id: user.uid,
               registeredMeetups: []
             }
             commit('setUser', newUser)
           })
-          .catch(console.error)
+          .catch(error => {
+            commit('setLoading', false)
+            commit('setError', error)
+          })
     },
     signUserIn ({commit}, payload) {
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
           .then(user => {
+            commit('setLoading', false)
             const newUser = {
               id: user.uid,
               registeredMeetups: []
             }
             commit('setUser', newUser)
           })
-          .catch(console.error)
+          .catch(error => {
+            commit('setLoading', false)
+          })
     }
   },
   getters: {
@@ -79,6 +97,12 @@ export const store = new Vuex.Store({
     },
     user  (state) {
       return state.user
+    },
+    loading (state) {
+      return state.loading
+    },
+    error (state) {
+      return state.error
     }
   }
 });

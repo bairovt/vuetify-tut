@@ -8,8 +8,10 @@ import App from './App'
 import router from './router'
 import { store } from './store'
 import DateFilter from './filters/date'
+import Alert from './components/Shared/Alert.vue'
 
 Vue.use(Vuetify)
+Vue.component('app-alert', Alert)
 
 Vue.config.productionTip = false
 Vue.filter('date', DateFilter)
