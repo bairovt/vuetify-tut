@@ -30,6 +30,8 @@ new Vue({
         databaseURL: 'https://vuetify-tut.firebaseio.com',
         projectId: 'vuetify-tut',
         storageBucket: 'vuetify-tut.appspot.com'
-      })
+      }
+    )
+    this.$store.dispatch('loadMeetups')
   }
 })
