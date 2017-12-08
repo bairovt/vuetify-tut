@@ -31,7 +31,12 @@ new Vue({
         projectId: 'vuetify-tut',
         storageBucket: 'vuetify-tut.appspot.com'
       }
-    )
+    );
+    firebase.auth().onAuthStateChanged((user) => {
+       if (user) {
+          this.$store.dispatch('autoSingIn', user)
+       }
+    });
     this.$store.dispatch('loadMeetups')
   }
 })
